@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>演習課題4：自動販売機（クラス）</title>
 </head>
 <body>
-    <h1>自動販売機システム</h1>
+    <h1 id="vending-machine">自動販売機システム</h1>
     <table id="item_area" border="1"></table>
 
     <script>
@@ -31,10 +31,11 @@
             }
 
             static showItemList(list) {
-                console.log("商品は以下の" + list.length + "種類です。");
                 for (let i = 0; i < list.length; i++) {
-                    console.log("商品番号: " + list[i].id + ", 商品名: " + list[i].name + ", 金額: " + list[i].price + ", 在庫数: " + list[i].stock);
+                    const item = list[i];
+                    console.log("商品番号: " + item.id + ", 商品名: " + item.name + ", 金額: " + item.price + ", 在庫数: " + item.stock);
                 }
+                console.log("商品は以下の" + list.length + "種類です。");
                 console.log("");
             }
 
@@ -42,8 +43,8 @@
                 if (this.stock >= 1) {
                     console.log("商品番号: " + this.id + ", 商品名: " + this.name + "を購入します。");
                     this.stock--;
-                    const stockElement = document.getElementById("stock" + this.id);
-                    stockElement.innerText = this.stock;
+                    const stockCell = document.getElementById("stock" + this.id);
+                    stockCell.innerText = this.stock;
                     console.log("残りは" + this.stock + "個です。");
                 } else {
                     console.log(this.name + "は商品の在庫がないため購入できません。");
@@ -55,7 +56,6 @@
         itemArea.innerHTML += "<tr><th>商品名</th><th>金額</th><th>在庫数</th><th>購入</th></tr>";
 
         const item_list = new Array(items.length);
-
         for (let i = 0; i < items.length; i++) {
             item_list[i] = new Item(items[i].name, items[i].price, items[i].stock);
         }
@@ -67,8 +67,7 @@
         }
 
         for (let i = 0; i < item_list.length; i++) {
-            const btn = document.getElementById("button" + item_list[i].id);
-            btn.onclick = () => {
+            document.getElementById("button" + item_list[i].id).onclick = () => {
                 item_list[i].buyItem();
             };
         }
